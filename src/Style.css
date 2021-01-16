@@ -1,0 +1,60 @@
+.selectors-container{
+  margin: 10px;
+  display:flex;
+  flex-direction: row;
+  justify-content:space-around;
+}
+
+.input-container {
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  justify-content: space-around;
+  margin: 10px;
+
+}
+
+label{
+  align-self: center;
+  font-size: 0.8em;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.input-number{
+align-self: center;
+height: 2em;
+max-width: 100%;
+min-width: 80%;
+margin: 10px;
+}
+
+.disabled-inputs{
+  display:flex;
+  flex-direction: column;
+  margin: 10px;
+  
+  
+}
+
+.text-area{
+  
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+    max-width: 90%;
+  min-width: 80%;
+  margin: 10px;
+}
+
+.input-text-number{
+  flex-grow: 3;
+}
+ 
+.icon {
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* align-items:flex-start;
+justify-content: safe; */
