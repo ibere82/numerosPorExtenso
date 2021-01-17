@@ -1,26 +1,22 @@
 import React from 'react';
-import '../Style.css';
 import Icon from '@mdi/react';
 import { mdiContentCopy } from '@mdi/js';
 
-
 export default function Inputs({ number, handleChangeInput, textNumber }) {
   const handle = () => {
-    const id = "text"
-    const elem = document.getElementById(id);
-    elem.select();
+    document.getElementById("text").select()
     document.execCommand('copy');
-  }
+  };
 
   return (
     <div>
       <div className="input-container">
 
-        <label htmlFor="input-range">
+        <label htmlFor="input-number">
           Digite um número inteiro maior que 0
         </label>
 
-        <input id="input-range"
+        <input id="input-number"
           className="input-number"
           type="number" value={number}
           min="0"
@@ -45,14 +41,11 @@ export default function Inputs({ number, handleChangeInput, textNumber }) {
           <Icon path={mdiContentCopy}
             className="icon"
             title="Copiar"
-
             size={2}
             onClick={handle}
           />
         </div>
-
       </div>
-
     </div>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-class WordNumbers {
+class NameNumbers {
 
   constructor(JSON) {
     const { schemaVersion, algorithmVersion, data } = JSON;
@@ -14,20 +14,17 @@ class WordNumbers {
     this.language = { value: null, label: null };
     this.gender = { value: null, label: null };
     this.isInflectedGender = null;
-    this.maximumDigitsAllowed = null
+    this.maximumDigitsAllowed = null;
 
     if (!this.testVersion(schemaVersion, algorithmVersion)) {
-      console.log('algoritmo incompativel')
+      console.log('algoritmo incompativel');
     }
     else {
       this.languages = data
         .map(({ language }, index) => {
           return { value: index, label: language.friendlyName }
         });
-
-
       this.isAble = true;
-
     };
   };
 
@@ -43,23 +40,11 @@ class WordNumbers {
     this.genderDefault = this.data[value].genderInformations.default;
     this.content = content;
     this.isCharged = true;
-    console.log(content)
-    console.log(this.maximumDigitsAllowed)
-
-    this.maximumDigitsAllowed = content.periodNames.reduce((acc, curr) => {
-      return acc + curr.periodSize
-    }, 0);
-    //const cu = content.periodNames.reduce((acc, curr) => parseInt(acc) + parseInt(curr.periodSize))
-    const cu = content.periodNames.reduce((acc, curr) => {
-      return acc + curr.periodSize
-    }, 0);
-    console.log(cu)
-
-
+    this.maximumDigitsAllowed = content.periodNames
+      .reduce((acc, curr) => {
+        return acc + curr.periodSize;
+      }, 0);
     this.analiseGenderBehavior(value);
-
-
-
   };
 
   analiseGenderBehavior = (lang) => {
@@ -81,37 +66,43 @@ class WordNumbers {
 
   getNumberText = (stringNumber) => {
     const theNumber = parseInt(stringNumber);
-    const { exceptions, connectors } = this.content;
-    const { wholeNumber: excWholeNumber, partialNumbers: excPartialNumbers } = exceptions;
-    const connector = connectors.beforePeriodName;
+    const exception = this.content.exceptions.wholeNumber;
 
-    const textTest = findException(excWholeNumber, theNumber);
+    const textTest = findException(exception, theNumber);
     if (textTest) return textTest;
 
     const arrayNumber = createArrayNumbers(stringNumber);
-    const arrayText = arrayNumber.map((item, index) => {
+    const arrayText = this.arrayNumberToarrayText(arrayNumber);
 
-      const textTest = excPartialNumbers
-        .periods
-        .find(({ periodIndex, periodNumber }) => {
-          return ((periodIndex === index) && (periodNumber === parseInt(item)))
-        });
-      if (textTest) return textTest.wordNumber;
-
-      const periodGender = this.getPeriodGender(index);
-      const periodName = this.getPeriodName(item, index);
-
-      let periodText = this.wholePeriodText(item, periodGender);
-
-      periodText += (
-        (periodText && periodName)
-          ? connector
-          : '')
-        + (periodText ? periodName : '');
-
-      return periodText;
-    });
     return this.arrayTextToStringWithConnectors(arrayText);
+  };
+
+  arrayNumberToarrayText = (arrayNumber) => {
+    const exception = this.content.exceptions.partialNumbers;
+    const connector = this.content.connectors.beforePeriodName;
+
+    return arrayNumber
+      .map((item, index) => {
+        const textTest = exception
+          .periods
+          .find(({ periodIndex, periodNumber }) => {
+            return ((periodIndex === index) && (periodNumber === parseInt(item)))
+          });
+        if (textTest) return { text: textTest.wordNumber, hasSyndeton: false } //  return textTest.wordNumber;
+
+        const periodGender = this.getPeriodGender(index);
+        const periodName = this.getPeriodName(item, index);
+
+        const { text: periodText, hasSyndeton } = this.wholePeriodText(item, periodGender);
+
+        const text = periodText + (
+          (periodText && periodName)
+            ? connector
+            : '')
+          + (periodText ? periodName : '')
+
+        return { text, hasSyndeton }
+      });
   };
 
 
@@ -130,22 +121,25 @@ class WordNumbers {
   };
 
   wholePeriodText = (period, periodGender) => {
-    const partialNumber = leftPad(period, 3, '0'); // '002'
-    const stringTens = partialNumber.slice(1, 3);
-    const partial = parseInt(partialNumber);  // 2
-    const partialReverse = reverse(partialNumber); // '200'
-    const digitHundreds = parseInt(partialReverse.slice(2, 3)); // 0
-    const connection = this.content.connectors.insidePeriod;
+    const partialNumber = leftPad(period, 3, '0');  // '2'    =>  '002'
+    const stringTens = partialNumber.slice(1, 3);   // '235'  =>  '35'
+    const partial = parseInt(partialNumber);        // '235   =>  235
+    const partialReverse = reverse(partialNumber);  // '235'  =>  '532'
+    const digitHundreds = parseInt(partialReverse.slice(2, 3)); //  '532' =>  2
     const hundreds = this.getOrdinaryArray(this.content.ordinaryDigitNames.hundreds, periodGender);
-    const exception = this.content.exceptions.numberInsidePeriod;
     const hundredText = hundreds[digitHundreds];
+    const exception = this.content.exceptions.numberInsidePeriod;
+    const connection = this.content.connectors.insidePeriod;
 
     const textTest = findException(exception, partial);
-    if (textTest) return textTest;
+    if (textTest) return { text: textTest, hasSyndeton: false };
 
-    const tensText = this.tensToText(stringTens, periodGender);
+    const { text: tensText, hasSyndeton } = this.tensToText(stringTens, periodGender);
 
-    return hundredText + ((tensText && hundredText) ? connection : '') + tensText;
+    const isSyndetic = (tensText && hundredText) ? true : false;
+    const text = hundredText + (isSyndetic ? connection : '') + tensText;
+
+    return { text, hasSyndeton: (hasSyndeton || isSyndetic) };
   };
 
   tensToText = (stringTens, periodGender) => {
@@ -155,7 +149,7 @@ class WordNumbers {
     const exception = this.content.exceptions.partialNumbers.tens;
 
     const textTest = findException(exception, parseInt(stringTens));
-    if (textTest) return textTest;
+    if (textTest) return { text: textTest, hasSyndeton: false };
 
     const digitUnit = parseInt(stringTens.slice(1, 2));
     const digitTens = parseInt(stringTens.slice(0, 1));
@@ -163,20 +157,29 @@ class WordNumbers {
     const unit = ones[digitUnit];
     const ten = tens[digitTens];
 
-    return ten + ((unit && ten) ? connection : '') + unit;
+    const isSyndetic = (unit && ten) ? true : false;
+    const text = ten + (isSyndetic ? connection : '') + unit;
+
+    return { text, hasSyndeton: isSyndetic };
   };
 
   arrayTextToStringWithConnectors = (array) => {
+
     let wholeText = '';
     const comma = this.content.connectors.betweenPeriods;
     const conjunction = this.content.connectors.insidePeriod;
 
-    const arrayWithoutEmptyElems = array.filter(elem => elem);
+    const arrayWithoutEmptyElems = array.filter(({ text }) => text);
 
-    arrayWithoutEmptyElems.forEach((elem, index) => {
-      const connection = ((index === 1) && (arrayWithoutEmptyElems.length > 2)) ? conjunction : comma;
-      wholeText = elem + ((wholeText && elem) ? connection : '') + wholeText;
-    });
+    arrayWithoutEmptyElems
+      .reverse()
+      .forEach(({ text, hasSyndeton }, index) => {
+        const connection = (
+          !hasSyndeton)
+          ? conjunction
+          : comma;
+        wholeText += ((index === 0) ? '' : connection) + text;
+      });
     return wholeText;
   };
 
@@ -218,4 +221,4 @@ function createArrayNumbers(stringNumber) {
   return arrayNumber;
 };
 
-export default WordNumbers;
+export default NameNumbers;

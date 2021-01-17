@@ -1,79 +1,86 @@
-import './App.css';
 import { useState, useEffect } from 'react';
-import { JSON } from './source/wordNames';
-import WordNumbers from './data/Numbers';
 import Selectors from './components/Selectors';
 import Inputs from './components/Inputs';
+import { JSON } from './source/nameNumbersData';
+import NameNumbers from './data/NameNumberClass';
+import './styles/App.css';
+import './styles/style.css';
 
-const numberClass = new WordNumbers(JSON);
+const nameNumber = new NameNumbers(JSON);
 
 function App() {
 
   const [language, setLanguage] = useState();
   const [gender, setGender] = useState();
-  const [languages] = useState(numberClass.languages);
+  const [languages] = useState(nameNumber.languages);
   const [genders, setGenders] = useState();
-  const [number, setNumber] = useState(0);
+  const [theNumber, setTheNumber] = useState();
   const [textNumber, setTextNumber] = useState('');
-  const [lastNumber, setLastNumber] = useState(null)
+  const [lastNumber, setLastNumber] = useState(null);
 
   useEffect(() => {
-    if (numberClass.done) handleNumber(number);
-  }, [language, gender, number]);
+    if (nameNumber.done && theNumber) handleNumber(theNumber);
+  }, [language, gender, theNumber]);
 
   const handleLanguageSelector = (e) => {
     setLanguage(e.label);
-    numberClass.chargeLanguage(e);
-    if (numberClass.isInflectedGender) {
-      setGenders(numberClass.genders)
+    nameNumber.chargeLanguage(e);
+    if (nameNumber.isInflectedGender) {
+      setGenders(nameNumber.genders);
     };
+    document.getElementById("input-number").focus()
   };
 
   const handleGenderSelector = (e) => {
-    numberClass.pickGender(e);
+    nameNumber.pickGender(e);
     setGender(e.label);
+    document.getElementById("input-number").focus()
   };
 
   const handleChangeInput = (e) => {
     const inputNumber = e.target.value;
-    setLastNumber(number);
-    setNumber(inputNumber);
+    setLastNumber(theNumber);
+    setTheNumber(inputNumber);
   };
 
-  const handleNumber = (n) => {
-    const max = numberClass.maximumDigitsAllowed;
-    if (n.length > max) {
+  const handleNumber = (number) => {
+    const max = nameNumber.maximumDigitsAllowed;
+    if (number.length > max) {
       alert(`Não é possível ultrapassar o limite de ${max} digitos`);
-      setNumber(
+      setTheNumber(
         lastNumber.length > max
           ? 0
           : lastNumber
       );
     }
     else
-      convertText(n);
-  }
+      convertText(number);
+  };
 
-  const convertText = (n) => {
+  const convertText = (number) => {
     const text =
-      (numberClass.done)
-        ? numberClass.getNumberText(n)
+      (nameNumber.done)
+        ? nameNumber.getNumberText(number)
         : '';
     setTextNumber(text);
   };
 
   return (
     <div className="App">
-      <h1>Números por extenso</h1>
-      <div >
+      <div className="header">
+        <h1>Números por extenso</h1>
+      </div>
+      <div className="main-content" >
         <Selectors
           languages={languages}
           genders={genders}
           handleLanguageSelector={handleLanguageSelector}
           handleGenderSelector={handleGenderSelector}
         />
-        <Inputs number={number} handleChangeInput={handleChangeInput} textNumber={textNumber} />
-
+        <Inputs
+          number={theNumber}
+          handleChangeInput={handleChangeInput}
+          textNumber={textNumber} />
       </div>
     </div >
   );
