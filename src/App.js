@@ -43,8 +43,8 @@ function App() {
 
 
   useEffect(() => {
-    if (nameNumber.done) handleNumber(theNumber)
-  }, [theNumber])
+    if (nameNumber.done && theNumber) handleNumber(theNumber)
+  }, [language, gender, theNumber])
 
   const handleLanguageSelector = (e) => {
 
