@@ -55,42 +55,6 @@ const JSON = {
             "singularName": "quatrilhão",
             "pluralName": "quatrilhões",
             "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "quintilhão",
-            "pluralName": "quintilhões",
-            "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "sextilhão",
-            "pluralName": "sextilhões",
-            "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "septilhão",
-            "pluralName": "septilhões",
-            "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "octilhão",
-            "pluralName": "octilhões",
-            "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "nonilhão",
-            "pluralName": "nonilhões",
-            "genderInflection": false
-          },
-          {
-            "periodSize": 3,
-            "singularName": "decilhão",
-            "pluralName": "decilhões",
-            "genderInflection": false
           }
         ],
         "ordinaryDigitNames": {
@@ -254,4 +218,4 @@ const JSON = {
     }]
 };
 
-export { JSON }
+export { JSON };

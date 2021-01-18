@@ -1,77 +1,15 @@
-h1 {
-  font-size: 150%!important;
-}
-
-label{
-  background-color:darkmagenta;
-  align-self: center;
-  font-size: 0.8em;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.main-content{
-  background-color: darkorange;
-  display: grid;
+.App {
+  text-align: center;
 }
 
 .header{
-  background-color: blue;
-  margin: 10px;
-  margin-top: 20px;
-}
-.selectors-container{
-  background-color: brown;
-  margin: 10px;
-  display:flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content:space-around;
-}
-
-.input-container {
-  background-color: chartreuse;
-  display:flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items:flex-start;
-  justify-content: space-around;
-  margin: 10px;
-}
-
-.input-number{
-background-color:darkkhaki;
-align-self: center;
-height: 2em;
-max-width: 100%;
-min-width: 60%;
-margin: 10px;
-}
-
-.disabled-inputs{
-  background-color: crimson;
-  display:flex;
-  flex-direction: column;
-  margin: 10px;
-}
-
-.text-area{
-  background-color:cornflowerblue;
-  align-self: center;
-  display: flex;
-  flex-direction: row;
-  max-width: 90%;
-  min-width: 80%;
-  margin: 10px;
-}
-
-.input-text-number{
-  background-color:burlywood;
-  flex-grow: 3;
+  font-size: 150%!important;
+  margin: 25px;
+  
 }
  
 .icon {
-  background-color:coral;
+  
   margin: 10px;
   cursor: pointer;
 }

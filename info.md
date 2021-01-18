@@ -16,7 +16,7 @@ Diferenças desta implementação:
 
 - Desenvolvida com ReactJS;
 
-- Aceita numerais com até 36 digitos. Contudo, a modelagem de dados permite a ampliação deste limite;
+- Aceita numerais com até 18 digitos;
 
 - Aceita flexão de gênero: Pode retornar numerais no feminino ou no masculino à escolha da pessoa usuária;
 
