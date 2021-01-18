@@ -19,6 +19,7 @@ function App() {
   const [textNumber, setTextNumber] = useState('');
   const [lastNumber, setLastNumber] = useState(null);
   const [placeholder, setPlaceholder] = useState();
+  const [inputLabel, setInputLabel] = useState('')
 
   useEffect(() => {
 
@@ -28,11 +29,22 @@ function App() {
         : !language
           ? 'Selecione um idioma para começar'
           : 'Selecione um gênero'
-
     setPlaceholder(message);
-    if (nameNumber.done && theNumber) handleNumber(theNumber);
 
-  }, [language, gender, theNumber]);
+    if (nameNumber.done) {
+      const max = nameNumber.maximumDigitsAllowed;
+      const inputElem = document.getElementById("input-number")
+      setInputLabel(`Digite um número inteiro maior ou igual a 0 e com até ${max} digitos`)
+      inputElem.disabled = false
+      inputElem.focus()
+    }
+
+  }, [language, gender]);
+
+
+  useEffect(() => {
+    if (nameNumber.done) handleNumber(theNumber)
+  }, [theNumber])
 
   const handleLanguageSelector = (e) => {
 
@@ -97,6 +109,7 @@ function App() {
         handleLanguageSelector={handleLanguageSelector}
         handleGenderSelector={handleGenderSelector}
         number={theNumber}
+        inputLabel={inputLabel}
         handleChangeInput={handleChangeInput}
         textNumber={textNumber}
         placeholder={placeholder} />

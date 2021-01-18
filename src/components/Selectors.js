@@ -17,12 +17,15 @@ export default function Selectors({ languages, genders, handleLanguageSelector, 
             <select
               id="select-language"
               className="browser-default"
-              onChange={handleLanguageSelector}>
+              onChange={handleLanguageSelector}
+              defaultValue="">
 
-              <option value="" disabled selected>Selecione um idioma</option>
-              {languages && languages.map(({ value, label }) => {
-                return <option value={value}>{label}</option>
-              })}</select>
+              <option key="null" value="" disabled>Selecione um idioma</option>
+              {languages && languages.map(({ value, label }, index) => {
+                return <option key={index} value={value}>{label}</option>
+              })}
+
+            </select>
           </label>
         </div>
       </div>
@@ -33,12 +36,15 @@ export default function Selectors({ languages, genders, handleLanguageSelector, 
             <select
               id="select-gender"
               className="browser-default"
-              onChange={handleGenderSelector}>
+              onChange={handleGenderSelector}
+              defaultValue="">
 
-              <option value="" disabled selected>Selecione um gênero</option>
-              {genders && genders.map(({ value, label }) => {
-                return <option value={value}>{label}</option>
-              })}</select>
+              <option key="null" value="" disabled>Selecione um gênero</option>
+              {genders && genders.map(({ value, label }, index) => {
+                return <option key={index} value={value}>{label}</option>
+              })}
+
+            </select>
           </label>
         </div>
       </div>

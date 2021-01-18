@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Inputs({ number, handleChangeInput, textNumber, placeholder }) {
+export default function Inputs({ number, handleChangeInput, textNumber, placeholder, inputLabel }) {
 
   const handleCopy = () => {
     document.getElementById("text").select()
@@ -12,7 +12,7 @@ export default function Inputs({ number, handleChangeInput, textNumber, placehol
       <div className="input-field col s12">
 
         <label htmlFor="input-number">
-          Digite um número inteiro maior que 0
+          {inputLabel}
         </label>
 
         <input id="input-number"
@@ -21,7 +21,9 @@ export default function Inputs({ number, handleChangeInput, textNumber, placehol
           min="0"
           max="999999999999999999"
           onChange={handleChangeInput}
-          autoFocus />
+          disabled
+          autoFocus
+          placeholder={(inputLabel ? '' : placeholder)} />
       </div>
 
       <div className="col s12">
@@ -34,7 +36,7 @@ export default function Inputs({ number, handleChangeInput, textNumber, placehol
               id="text"
               readOnly
               value={textNumber}
-              placeholder={placeholder}></textarea>
+              placeholder={inputLabel ? placeholder : 'O número por extenso será exibido aqui'}></textarea>
           </div>
 
           <div className="col s2">

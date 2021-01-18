@@ -10,13 +10,18 @@ export default function Form(
     number,
     handleChangeInput,
     textNumber,
-    placeholder
+    placeholder,
+    inputLabel
   }
 ) {
 
+  const preventDefault = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="row">
-      <form className="row">
+      <form className="row" onSubmit={preventDefault}>
 
         <div className="col s12 m4 l3">
           <Selectors
@@ -29,6 +34,7 @@ export default function Form(
         <div className="col s12 m8 l9">
           <Inputs
             number={number}
+            inputLabel={inputLabel}
             handleChangeInput={handleChangeInput}
             placeholder={placeholder}
             textNumber={textNumber} />
