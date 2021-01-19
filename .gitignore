@@ -1,4 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.eslintcache
 
 # dependencies
 /node_modules
@@ -20,7 +21,6 @@ build/static/js/*.map
 .env.development.local
 .env.test.local
 .env.production.local
-.eslintcache
 
 npm-debug.log*
 yarn-debug.log*
