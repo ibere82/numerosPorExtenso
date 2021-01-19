@@ -66,7 +66,8 @@ function App() {
   };
 
   const handleChangeInput = (e) => {
-    const inputNumber = e.target.value;
+    const targetNumber = e.target.value.replace(/[^0-9]/gi, '')
+    const inputNumber = targetNumber
     setLastNumber(theNumber);
     setTheNumber(inputNumber);
   };
