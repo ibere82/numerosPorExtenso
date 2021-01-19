@@ -20,7 +20,9 @@ export default function Inputs({ number, handleChangeInput, textNumber, placehol
           type="number" value={number}
           min="0"
           max="999999999999999999"
+          step="1"
           onChange={handleChangeInput}
+          pattern="/[0-9]*/"
           disabled
           autoFocus
           placeholder={(inputLabel ? '' : placeholder)} />
