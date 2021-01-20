@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
+import M from 'materialize-css';
 
 export default function Selectors({ languages, genders, handleLanguageSelector, handleGenderSelector }) {
 
+  M.AutoInit();
+  useEffect(() => {
+
+  }, [])
   useEffect(() => {
     const genderElem = document.getElementById('select-gender');
     genderElem.disabled = !genders
@@ -16,7 +21,6 @@ export default function Selectors({ languages, genders, handleLanguageSelector, 
           <label>Idioma
             <select
               id="select-language"
-              className="browser-default"
               onChange={handleLanguageSelector}
               defaultValue="">
 
@@ -35,7 +39,6 @@ export default function Selectors({ languages, genders, handleLanguageSelector, 
           <label>Gêneros
             <select
               id="select-gender"
-              className="browser-default"
               onChange={handleGenderSelector}
               defaultValue="">
 
